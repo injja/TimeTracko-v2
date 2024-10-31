@@ -9,17 +9,17 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name="projects")
-public class Project extends Base{
+@Table(name = "projects")
+public class Project extends Base {
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="description", length = 300)
+    @Column(name = "description", length = 300)
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="created-by")
+    @JoinColumn(name = "created-by")
     private WorkspaceMember createdBy;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
@@ -29,9 +29,6 @@ public class Project extends Base{
 //    @ManyToOne
 //    @JoinColumn(name="workspace")
 //    private Workspace workspace;
-
-
-
 
 
 }

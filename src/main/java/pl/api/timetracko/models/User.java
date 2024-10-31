@@ -1,15 +1,11 @@
 package pl.api.timetracko.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.Data;
-import pl.api.timetracko.Enums.Role;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -31,8 +27,7 @@ public class User extends Base {
     @Column
     private String password;
 
-    @Column
-    private Role role;
+
 
 //    public User(String email, String password, String username, String name, String surname) {
 //        this.email = email;
@@ -43,8 +38,8 @@ public class User extends Base {
 //    }
 
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
-//    @JsonIgnoreProperties({"user"})
-//    private List<WorkspaceMember> workspaceMembers;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("user")
+    private List<WorkspaceMember> workspaceMembers;
 
 }

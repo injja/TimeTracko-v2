@@ -1,14 +1,21 @@
-package pl.api.timetracko.models;
+package pl.api.timetracko.config.securityModels;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.api.timetracko.models.User;
 
 import java.util.Collection;
 import java.util.Collections;
-
+@Data
 public class CustomUserDetails implements UserDetails {
     private User user;
+
+    @JsonIgnore
+    private String password;
+
     public CustomUserDetails(User user){
         this.user=user;
     }

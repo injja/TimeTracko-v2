@@ -2,7 +2,6 @@ package pl.api.timetracko.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import pl.api.timetracko.Enums.Role;
 
 @Data
 @Entity
@@ -13,11 +12,12 @@ public class ProjectMember extends Base {
     private boolean active=true;
 
     @Column
-    private Role role;
+    private String role;
 
     @ManyToOne
     @JoinColumn(name="workspace-member_id")
     private WorkspaceMember workspaceMember;
+
 
 
 
