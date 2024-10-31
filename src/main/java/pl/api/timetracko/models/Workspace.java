@@ -20,4 +20,9 @@ public class Workspace extends Base {
     @JsonIgnoreProperties("workspace")
     private List<WorkspaceMember> workspaceMembers;
 
+    @ManyToOne
+    @JoinColumn(name = "created-by")
+    @JsonIgnoreProperties("workspaceMembers")
+    private User createdBy;
+
 }

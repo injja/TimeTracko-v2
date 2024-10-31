@@ -6,15 +6,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import pl.api.timetracko.services.CustomUserDetailsService;
+import pl.api.timetracko.config.securityServices.CustomUserDetailsService;
+
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -25,9 +29,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/register").permitAll() // Allow access to /register without authentication
+                        .anyRequest().authenticated()         // Secure all other endpoints
+                )
                 .csrf(customizer -> customizer.disable())
-                .formLogin(form -> form.defaultSuccessUrl("/workspace").permitAll())
+                .formLogin(form -> form.defaultSuccessUrl("/workspace", true).permitAll())
                 .httpBasic(Customizer.withDefaults())
                 .logout(Customizer.withDefaults())
                 .build();
@@ -35,7 +42,7 @@ public class SecurityConfig {
 
 
     }
-//        http
+    //        http
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/register", "/login", "/project","/css/**", "/js/**", "/images/**").permitAll()  // Pozwól na dostęp do stron rejestracji i logowania
 //                        .anyRequest().authenticated()  // Wymagaj autoryzacji do wszystkich innych zasobów
@@ -64,6 +71,8 @@ public class SecurityConfig {
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider= new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 }
