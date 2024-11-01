@@ -21,10 +21,9 @@ public class WorkspaceController extends CrudController<Workspace> {
         this.workspaceService=workspaceService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Workspace>> findAll(){
-        return ResponseEntity.ok(workspaceService.getAll());
-    }
-
+//    @GetMapping("/admin")
+//    public ResponseEntity<List<Workspace>> findAllAdmin(){
+//        return ResponseEntity.ok(workspaceService.getAllAdmin());
+//    }
 
 }

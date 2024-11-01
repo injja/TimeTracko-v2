@@ -46,4 +46,15 @@ public class WorkspaceService extends CrudService<Workspace> {
                 .filter(workspace -> workspace.getWorkspaceMembers().stream()
                         .anyMatch(member -> member.getUser().getId().equals(customUserDetailsService.getCurrentUser().getUser().getId())))
                 .collect(Collectors.toList());
-}}
+}
+
+        public WorkspaceMember getMember(Long userId, Long workspaceId){
+            return workspaceMemberRepository.findByUserIdAndWorkspaceId(userId, workspaceId);
+        }
+
+
+
+
+
+
+}
