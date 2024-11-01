@@ -27,6 +27,8 @@ public class User extends Base {
     @Column
     private String password;
 
+//    @Column
+//    private boolean admin=false;
 
 
 //    public User(String email, String password, String username, String name, String surname) {

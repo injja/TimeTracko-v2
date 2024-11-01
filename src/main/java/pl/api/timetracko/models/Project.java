@@ -20,15 +20,20 @@ public class Project extends Base {
 
     @ManyToOne
     @JoinColumn(name = "created-by")
+    @JsonIgnoreProperties("workspace")
     private WorkspaceMember createdBy;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("project")
     private List<Task> tasks;
 
-//    @ManyToOne
-//    @JoinColumn(name="workspace")
-//    private Workspace workspace;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("project")
+    private List<ProjectMember> projectMembers;
+
+    @ManyToOne
+    @JoinColumn(name="workspace_id")
+    private Workspace workspace;
 
 
 }
