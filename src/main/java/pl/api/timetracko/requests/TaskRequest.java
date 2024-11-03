@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Max;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class TaskRequest {
@@ -11,6 +12,6 @@ public class TaskRequest {
     String description;
     Long project_id;
     int priority;
-    LocalDate due_date;
+    LocalDateTime dueTo;
 
 }

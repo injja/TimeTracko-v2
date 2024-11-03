@@ -6,7 +6,7 @@ import pl.api.timetracko.repositories.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-public class BaseService<T extends Base> {
+public abstract class BaseService<T extends Base> {
     protected CrudRepository<T> crudRepository;
 
     public BaseService(CrudRepository<T> crudRepository) {
