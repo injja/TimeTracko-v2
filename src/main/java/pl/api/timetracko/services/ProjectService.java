@@ -33,10 +33,16 @@ public class ProjectService extends CrudService<Project> {
     }
 
     public List<Project> getAll(Long workspaceId){
+        if(workspaceService.isAdmin(workspaceId)){
+            return projectRepository.findAll().stream()
+                    .filter(project -> project.getWorkspace().getId().equals(workspaceId))
+                    .collect(Collectors.toList());
+        }
+        else{
         return projectRepository.findAll().stream()
                 .filter(project -> project.getProjectMembers().stream()
                         .anyMatch(member -> member.getWorkspaceMember().getUser().equals(customUserDetailsService.getCurrentUser().getUser())))
                 .filter(project -> project.getWorkspace().getId().equals(workspaceId))
                 .collect(Collectors.toList());
-    }
+    }}
 }

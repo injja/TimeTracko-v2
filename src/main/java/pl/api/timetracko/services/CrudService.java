@@ -21,6 +21,7 @@ public abstract class CrudService<T extends Base> extends BaseService<T> {
     public T create(T object){
         return crudRepository.save(object);
     }
+
     public T update(Long id,T newObject){
         newObject.setId(id);
         return crudRepository.save(newObject);

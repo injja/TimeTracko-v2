@@ -44,6 +44,8 @@ public class WorkspaceService extends CrudService<Workspace> {
     public List<Workspace> getAll(){
         return workspaceRepository.findAll().stream()
                 .filter(workspace -> workspace.getWorkspaceMembers().stream()
+                        .anyMatch(member-> member.isActive()))
+                .filter(workspace -> workspace.getWorkspaceMembers().stream()
                         .anyMatch(member -> member.getUser().getId().equals(customUserDetailsService.getCurrentUser().getUser().getId())))
                 .collect(Collectors.toList());
 }
@@ -52,6 +54,13 @@ public class WorkspaceService extends CrudService<Workspace> {
             return workspaceMemberRepository.findByUserIdAndWorkspaceId(userId, workspaceId);
         }
 
+        public boolean isAdmin(Long workspaceId){
+        try {
+            return workspaceMemberRepository.findByUserIdAndWorkspaceId(customUserDetailsService.getCurrentUser().getUser().getId(), workspaceId).getRole().getId().equals(1L);
+        } catch (NullPointerException e){
+            return false;
+
+        }}
 
 
 

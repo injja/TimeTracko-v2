@@ -28,11 +28,11 @@ public class ProjectMember extends Base {
     @JoinColumn(name="role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "takenBy", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("takenBy")
-    private List<Task> tasksTaken;
-
-    @OneToMany(mappedBy = "doneBy", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("doneBy")
-    private List<Task> tasksDone;
+//    @OneToMany(mappedBy = "takenBy", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("takenBy")
+//    private List<Task> tasksTaken;
+//
+//    @OneToMany(mappedBy = "doneBy", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("doneBy")
+//    private List<Task> tasksDone;
 }

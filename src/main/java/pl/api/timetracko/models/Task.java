@@ -21,15 +21,15 @@ public class Task extends Base {
 
     @ManyToOne
     @JoinColumn(name="taken-by")
-    private ProjectMember takenBy;
+    private User takenBy;
 
     @ManyToOne
     @JoinColumn(name="created-by", nullable = false)
-    private ProjectMember createdBy;
+    private User createdBy;
 
     @ManyToOne
     @JoinColumn(name="done-by")
-    private ProjectMember doneBy;
+    private User doneBy;
 
     @Column(nullable = false)
     @Min(1)
@@ -37,13 +37,13 @@ public class Task extends Base {
     private int priority;
 
     @Column
-    private LocalDate created;
+    private LocalDateTime created;
 
     @Column
-    private LocalDate dueTo;
+    private LocalDateTime dueTo;
 
     @Column
-    private LocalDate completed;
+    private LocalDateTime completed;
 
     @ManyToOne
     @JoinColumn(name="work-period")

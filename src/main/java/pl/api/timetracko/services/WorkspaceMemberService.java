@@ -12,6 +12,7 @@ public class WorkspaceMemberService extends BaseService<WorkspaceMember> {
     private UserService userService;
     private WorkspaceService workspaceService;
     private RoleService roleService;
+
     @Autowired
     public WorkspaceMemberService(WorkspaceMemberRepository workspaceMemberRepository, UserService userService, WorkspaceService workspaceService, RoleService roleService){
         super(workspaceMemberRepository);
@@ -28,6 +29,15 @@ public class WorkspaceMemberService extends BaseService<WorkspaceMember> {
         newMember.setWorkspace(workspaceService.findById(memberRequest.getWorkspace_id()));
         return workspaceMemberRepository.save(newMember);
     }
+
+    public WorkspaceMember desactivate(Long id){
+        WorkspaceMember member = findById(id);
+        member.setRole(roleService.findById(3L));
+        member.setActive(false);
+        return workspaceMemberRepository.save(member);
+    }
+
+
 
 
 }
