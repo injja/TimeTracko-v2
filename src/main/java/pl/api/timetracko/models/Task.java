@@ -24,7 +24,7 @@ public class Task extends Base {
     private User takenBy;
 
     @ManyToOne
-    @JoinColumn(name="created-by", nullable = false)
+    @JoinColumn(name="created-by")
     private User createdBy;
 
     @ManyToOne

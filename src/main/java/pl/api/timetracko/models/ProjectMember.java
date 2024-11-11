@@ -17,8 +17,8 @@ public class ProjectMember extends Base {
     private boolean active=true;
 
     @ManyToOne
-    @JoinColumn(name="workspace-member_id")
-    private WorkspaceMember workspaceMember;
+    @JoinColumn(name="user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name="project_id")

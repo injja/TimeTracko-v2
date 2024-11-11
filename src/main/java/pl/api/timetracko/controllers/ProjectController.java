@@ -26,7 +26,6 @@ public class ProjectController extends BaseController<Project>{
     @PostMapping
     @PreAuthorize("@workspaceService.isAdmin(#project.workspace_id)")
     public ResponseEntity<Project> create(@RequestBody ProjectRequest project){
-        System.out.println(5);
         Project createdObject=projectService.create(project);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObject);
     }

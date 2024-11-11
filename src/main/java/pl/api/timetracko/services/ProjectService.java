@@ -1,5 +1,6 @@
 package pl.api.timetracko.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.api.timetracko.config.securityServices.CustomUserDetailsService;
@@ -41,8 +42,18 @@ public class ProjectService extends CrudService<Project> {
         else{
         return projectRepository.findAll().stream()
                 .filter(project -> project.getProjectMembers().stream()
-                        .anyMatch(member -> member.getWorkspaceMember().getUser().equals(customUserDetailsService.getCurrentUser().getUser())))
+                        .anyMatch(member -> member.getUser().equals(customUserDetailsService.getCurrentUser().getUser()) && member.isActive()))
                 .filter(project -> project.getWorkspace().getId().equals(workspaceId))
                 .collect(Collectors.toList());
     }}
+@Transactional
+    public boolean isMember(Long projectId) {
+
+        Project project=projectRepository.findById(projectId)
+                .orElseThrow(()->new RuntimeException("No project with such id"));
+
+    return project.getProjectMembers().stream()
+            .peek(member -> System.out.println("Member: " + member.getUser().getId() + ", Current User: " + customUserDetailsService.getCurrentUser().getUser().getId()))
+            .anyMatch(member -> member.getUser().getId().equals(customUserDetailsService.getCurrentUser().getUser().getId()));
+}
 }

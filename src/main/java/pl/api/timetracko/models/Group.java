@@ -17,7 +17,9 @@ public class Group extends Base{
 
     @ManyToOne
     @JoinColumn(name = "created-by")
-    private WorkspaceMember createdBy;
+    private User createdBy;
+
+
 
 
 }
