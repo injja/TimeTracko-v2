@@ -11,24 +11,33 @@ import java.util.List;
 @Data
 @Entity
 @Table(name="workspace-members")
-public class WorkspaceMember extends Base {
-
+public class WorkspaceMember extends GroupMember {
+//zmiany
     @JoinColumn(name="user_id", nullable = false)
     @ManyToOne
     @JsonIgnoreProperties("workspaceMembers")
     private User user;
-
+//
     @JoinColumn(name="workspace_id", nullable = false)
     @ManyToOne
     @JsonIgnoreProperties("workspaceMembers")
     private Workspace workspace;
 
-    @Column
-    private boolean active=true;
+    @OneToMany(mappedBy = "workspaceMember", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("workspaceMember")
+    private List<ProjectMember> projectMembers;
 
-    @ManyToOne
-    @JoinColumn(name="role_id")
-    private Role role;
+//    @OneToMany(mappedBy = "workspaceMember", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("workspaceMember")
+//    private List<ProjectMember> projectMembers;
+//
+//    @Column
+//    private boolean active=true;
+//
+//    @ManyToOne
+//    @JoinColumn(name="role_id")
+//    private Role role;
+    ////////////////////
 //
 //    @OneToMany(mappedBy = "workspaceMember", cascade = CascadeType.ALL)
 //    @JsonIgnoreProperties("workspaceMember")

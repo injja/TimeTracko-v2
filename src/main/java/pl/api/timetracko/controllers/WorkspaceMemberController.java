@@ -12,7 +12,7 @@ import pl.api.timetracko.services.WorkspaceMemberService;
 
 @RequestMapping("/workspace-member")
 @RestController
-public class WorkspaceMemberController extends BaseController<WorkspaceMember> {
+public class WorkspaceMemberController extends GroupMemberController<WorkspaceMember> {
     protected WorkspaceMemberService workspaceMemberService;
     public WorkspaceMemberController(WorkspaceMemberService workspaceMemberService){
         super(workspaceMemberService);

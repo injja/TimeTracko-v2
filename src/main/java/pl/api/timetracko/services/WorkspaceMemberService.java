@@ -3,23 +3,26 @@ package pl.api.timetracko.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.api.timetracko.models.WorkspaceMember;
+import pl.api.timetracko.repositories.GroupMemberRepository;
 import pl.api.timetracko.repositories.WorkspaceMemberRepository;
 import pl.api.timetracko.requests.WorkspaceMemberRequest;
 
 @Service
-public class WorkspaceMemberService extends BaseService<WorkspaceMember> {
+public class WorkspaceMemberService extends GroupMemberService<WorkspaceMember> {
+    private final GroupMemberRepository groupMemberRepository;
     protected WorkspaceMemberRepository workspaceMemberRepository;
     private UserService userService;
     private WorkspaceService workspaceService;
     private RoleService roleService;
 
     @Autowired
-    public WorkspaceMemberService(WorkspaceMemberRepository workspaceMemberRepository, UserService userService, WorkspaceService workspaceService, RoleService roleService){
-        super(workspaceMemberRepository);
+    public WorkspaceMemberService(WorkspaceMemberRepository workspaceMemberRepository, UserService userService, WorkspaceService workspaceService, RoleService roleService, GroupMemberRepository<WorkspaceMember> groupMemberRepository){
+        super(workspaceMemberRepository, groupMemberRepository);
         this.workspaceMemberRepository=workspaceMemberRepository;
         this.userService = userService;
         this.workspaceService = workspaceService;
         this.roleService = roleService;
+        this.groupMemberRepository = groupMemberRepository;
     }
 
     public WorkspaceMember create(WorkspaceMemberRequest memberRequest){
@@ -30,12 +33,10 @@ public class WorkspaceMemberService extends BaseService<WorkspaceMember> {
         return workspaceMemberRepository.save(newMember);
     }
 
-    public WorkspaceMember desactivate(Long id){
-        WorkspaceMember member = findById(id);
-        member.setRole(roleService.findById(3L));
-        member.setActive(false);
-        return workspaceMemberRepository.save(member);
+    public WorkspaceMember findByWorkspaceIdAndUserId(Long workspaceId, Long id) {
+        return workspaceMemberRepository.findByUserIdAndWorkspaceId(id, workspaceId);
     }
+
 
 
 

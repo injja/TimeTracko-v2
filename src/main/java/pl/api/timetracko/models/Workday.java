@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name="workdays")
 public class Workday extends Base {
 
-    @OneToMany(mappedBy = "workday", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workday", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("work-period")
     private List<WorkPeriod> workPeriods;
 

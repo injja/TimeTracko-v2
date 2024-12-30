@@ -27,8 +27,8 @@ public class User extends Base {
     @Column
     private String password;
 
-//    @Column
-//    private boolean admin=false;
+    @Column
+    private boolean admin=false;
 
 
 //    public User(String email, String password, String username, String name, String surname) {
@@ -40,7 +40,7 @@ public class User extends Base {
 //    }
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)
     @JsonIgnoreProperties("user")
     private List<WorkspaceMember> workspaceMembers;
 

@@ -6,33 +6,29 @@ import jakarta.persistence.*;
 import lombok.Data;
 import pl.api.timetracko.config.securityModels.Role;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name="project-members")
-public class ProjectMember extends Base {
-
-    @Column
-    private boolean active=true;
-
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
+public class ProjectMember extends GroupMember implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="project_id")
+    @JsonIgnoreProperties({"projectMembers", "tasks", "workspace","project"})
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name="role_id")
-    private Role role;
+    @JoinColumn(name="workspace_member_id")
+    @JsonIgnoreProperties("projectMembers")
+    private WorkspaceMember workspaceMember;
 
-//    @OneToMany(mappedBy = "takenBy", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties("takenBy")
-//    private List<Task> tasksTaken;
+    @OneToMany(mappedBy = "takenBy", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("takenBy")
+    private List<Task> tasksTaken;
 //
-//    @OneToMany(mappedBy = "doneBy", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties("doneBy")
-//    private List<Task> tasksDone;
+    @OneToMany(mappedBy = "doneBy", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("doneBy")
+    private List<Task> tasksDone;
 }

@@ -31,4 +31,10 @@ public abstract class CrudController<T extends Base> extends BaseController<T>{
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObject);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<T> update(@PathVariable Long id, @RequestBody T t){
+        T updatedObject=crudService.update(id, t);
+        return ResponseEntity.ok(updatedObject);
+    }
+
 }

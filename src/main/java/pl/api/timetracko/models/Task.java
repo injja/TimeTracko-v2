@@ -1,5 +1,6 @@
 package pl.api.timetracko.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,15 +22,18 @@ public class Task extends Base {
 
     @ManyToOne
     @JoinColumn(name="taken-by")
-    private User takenBy;
+    @JsonIgnoreProperties("tasks")
+    private ProjectMember takenBy= null;
 
     @ManyToOne
     @JoinColumn(name="created-by")
-    private User createdBy;
+    @JsonIgnoreProperties("tasks")
+    private ProjectMember createdBy;
 
     @ManyToOne
     @JoinColumn(name="done-by")
-    private User doneBy;
+    @JsonIgnoreProperties("tasks")
+    private ProjectMember doneBy=null;
 
     @Column(nullable = false)
     @Min(1)
@@ -43,7 +47,8 @@ public class Task extends Base {
     private LocalDateTime dueTo;
 
     @Column
-    private LocalDateTime completed;
+    private LocalDateTime completed=null;
+
 
     @ManyToOne
     @JoinColumn(name="work-period")
@@ -51,6 +56,7 @@ public class Task extends Base {
 
     @ManyToOne
     @JoinColumn(name="project")
+    @JsonIgnoreProperties("tasks")
     private Project project;
 
 
