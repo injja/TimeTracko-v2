@@ -1,6 +1,7 @@
 package pl.api.timetracko.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public abstract class BaseController<T extends Base> {
 //        return ResponseEntity.status(250).body(new MessageResponse("Prawidlowo usunięto"));
 //    }
 
+    @PreAuthorize("@userService.isAdmin()")
     @GetMapping("/{id}")
     public ResponseEntity<T> findById(@PathVariable Long id) {
         return ResponseEntity.ok(baseService.findById(id));

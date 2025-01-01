@@ -2,6 +2,7 @@ package pl.api.timetracko.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import pl.api.timetracko.models.ProjectMember;
@@ -32,6 +33,7 @@ public class ProjectMemberController extends GroupMemberController<ProjectMember
      * @return ResponseEntity containing the created ProjectMember and HTTP status code
      */
     @PostMapping
+    @PreAuthorize("@projectService.isAdmin(projectMemberRequest.getProject_id())")
     public ResponseEntity<ProjectMember> create(@RequestBody ProjectMemberRequest projectMemberRequest){
         ProjectMember newMember=projectMemberService.create(projectMemberRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMember);

@@ -144,4 +144,13 @@ public class TaskService extends CrudService<Task> {
                 .anyMatch(member -> member.getWorkspaceMember().getUser().getId().equals(customUserDetailsService.getCurrentUser().getUser().getId()) && member.getRole().getName().equals("admin"));
     }
 
+    public boolean isMember(Long id) {
+        Task task=taskRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("No task with such id"));
+        Project project=projectRepository.findById(task.getProject().getId())
+                .orElseThrow(()->new RuntimeException("No project with such id"));
+        return project.getProjectMembers().stream()
+                .anyMatch(member -> member.getWorkspaceMember().getUser().getId().equals(customUserDetailsService.getCurrentUser().getUser().getId()));
+    }
+
 }
