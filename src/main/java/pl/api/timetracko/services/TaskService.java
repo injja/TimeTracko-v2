@@ -6,6 +6,7 @@ import pl.api.timetracko.models.Project;
 import pl.api.timetracko.models.Task;
 import pl.api.timetracko.repositories.ProjectRepository;
 import pl.api.timetracko.repositories.TaskRepository;
+import pl.api.timetracko.requests.EmailRequest;
 import pl.api.timetracko.requests.TaskRequest;
 
 import java.time.LocalDateTime;
@@ -20,14 +21,16 @@ public class TaskService extends CrudService<Task> {
     private final CustomUserDetailsService customUserDetailsService;
     private final ProjectService projectService;
     protected ProjectRepository projectRepository;
+    private final MailService mailService;
 
-    public TaskService(ProjectRepository projectRepository,TaskRepository taskRepository, CustomUserDetailsService customUserDetailsService, ProjectService projectService, ProjectMemberService projectMemberService){
+    public TaskService(MailService mailService,ProjectRepository projectRepository,TaskRepository taskRepository, CustomUserDetailsService customUserDetailsService, ProjectService projectService, ProjectMemberService projectMemberService){
         super(taskRepository);
         this.taskRepository=taskRepository;
         this.customUserDetailsService=customUserDetailsService;
         this.projectService=projectService;
         this.projectMemberService = projectMemberService;
         this.projectRepository = projectRepository;
+        this.mailService = mailService;
     }
 
     public Task create(TaskRequest taskRequest){
@@ -78,6 +81,13 @@ public class TaskService extends CrudService<Task> {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             task.setTakenBy(projectMemberService.findByProjectIdAndUserId(task.getProject().getId(), userId));
+            EmailRequest emailRequest = new EmailRequest();
+            emailRequest.setTo(task.getTakenBy().getWorkspaceMember().getUser().getEmail());
+            emailRequest.setSubject("Task assigned");
+
+            emailRequest.setBody("You have been assigned to task: " + task.getName() + " by " + customUserDetailsService.getCurrentUser().getUser().getUsername()+" with due date: "+task.getDueTo().getDayOfMonth()+"."+task.getDueTo().getMonthValue()+"."+task.getDueTo().getYear());
+            System.out.println("Sending email to: " + emailRequest.getTo());
+            mailService.sendSimpleEmail(emailRequest);
             taskRepository.save(task);
         }else{
             throw new RuntimeException("Task with id " + taskId + " not found");
@@ -100,7 +110,15 @@ public class TaskService extends CrudService<Task> {
         if (optionalTask.isPresent()) {
             Task task = optionalTask.get();
             task.setTakenBy(projectMemberService.findByProjectIdAndUserId(task.getProject().getId(), customUserDetailsService.getCurrentUser().getUser().getId()));
+            EmailRequest emailRequest = new EmailRequest();
+            emailRequest.setTo(task.getTakenBy().getWorkspaceMember().getUser().getEmail());
+            emailRequest.setSubject("Task assigned");
+
+            emailRequest.setBody("You assigned yourself to task: " + task.getName());
+            System.out.println("Sending email to: " + emailRequest.getTo());
+            mailService.sendSimpleEmail(emailRequest);
             taskRepository.save(task);
+
         }else{
             throw new RuntimeException("Task with id " + taskId + " not found");
         }

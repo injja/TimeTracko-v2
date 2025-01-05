@@ -21,21 +21,21 @@ import pl.api.timetracko.services.ProjectMemberService;
 @RestController
 @RequestMapping("/project-member")
 public class ProjectMemberController extends GroupMemberController<ProjectMember> {
-    private final ProjectMemberService projectMemberService;
+    protected ProjectMemberService projectMemberService;
     public ProjectMemberController(ProjectMemberService projectMemberService) {
         super(projectMemberService);
-        this.projectMemberService=projectMemberService;
+        this.projectMemberService = projectMemberService;
     }
     /**
      * Creates a new project member.
      *
-     * @param projectMemberRequest the request object containing the details of the project member to be created
+     * @param request the request object containing the details of the project member to be created
      * @return ResponseEntity containing the created ProjectMember and HTTP status code
      */
     @PostMapping
-    @PreAuthorize("@projectService.isAdmin(projectMemberRequest.getProject_id())")
-    public ResponseEntity<ProjectMember> create(@RequestBody ProjectMemberRequest projectMemberRequest){
-        ProjectMember newMember=projectMemberService.create(projectMemberRequest);
+    @PreAuthorize("@projectService.isAdmin(#request.getProject_id())")
+    public ResponseEntity<ProjectMember> create(@RequestBody ProjectMemberRequest request){
+        ProjectMember newMember=projectMemberService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(newMember);
     }
 }

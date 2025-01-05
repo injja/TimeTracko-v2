@@ -15,7 +15,7 @@ import pl.api.timetracko.services.TaskService;
 
 @RestController
 @RequestMapping("/comment")
-public class CommentController extends CrudController<Comment>{
+public class CommentController extends BaseController<Comment>{
     protected CommentService commentService;
     protected TaskService taskService;
     public CommentController(CommentService commentService, TaskService taskService) {
@@ -24,7 +24,7 @@ public class CommentController extends CrudController<Comment>{
     }
 
     @PostMapping
-    @PreAuthorize("@taskService.isMember(commentRequest.getTask_id())")
+    @PreAuthorize("@taskService.isMember(#commentRequest.getTask_id())")
     public ResponseEntity<Comment> create(@RequestBody CommentRequest commentRequest){
         Comment newComment= commentService.create(commentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(newComment);

@@ -15,7 +15,7 @@ public class CommentService extends CrudService<Comment> {
     protected CustomUserDetailsService customUserDetailsService;
     protected ProjectMemberService projectMemberService;
 
-    public CommentService(ProjectMemberService projectMemberService, CommentRepository commentRepository, TaskService taskService, CustomUserDetailsService customUserDetailsService, CommentRepository commentRepository) {
+    public CommentService(ProjectMemberService projectMemberService, CommentRepository commentRepository, TaskService taskService, CustomUserDetailsService customUserDetailsService) {
         super(commentRepository);
         this.taskService=taskService;
         this.customUserDetailsService=customUserDetailsService;
