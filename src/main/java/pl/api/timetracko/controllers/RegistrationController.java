@@ -1,4 +1,7 @@
 package pl.api.timetracko.controllers;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +12,7 @@ import pl.api.timetracko.models.User;
 import pl.api.timetracko.repositories.UserRepository;
 
 @Controller
+@Tag(name = "Registration Controller", description = "Endpoints for user registration")
 public class RegistrationController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -25,6 +29,7 @@ public class RegistrationController {
 //    }
 
     @PostMapping("/register")
+    @Operation(summary = "Register a new user", description = "Registers a new user with the provided details")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         System.out.println(123456);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
