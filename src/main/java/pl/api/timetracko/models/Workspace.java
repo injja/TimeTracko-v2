@@ -11,18 +11,18 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name="workspaces")
-public class Workspace extends Base {
-
-    @Column(nullable=false)
-    private String name;
-
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
+public class Workspace extends Group {
+//zmiany
+//    @Column(nullable=false)
+//    private String name;
+//
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("workspace")
     private List<WorkspaceMember> workspaceMembers;
 
     @ManyToOne
     @JoinColumn(name = "created-by")
-    @JsonIgnoreProperties("workspaceMembers")
-    private User createdBy;
+    @JsonIgnoreProperties("workspace")
+    private WorkspaceMember createdBy;
 
 }

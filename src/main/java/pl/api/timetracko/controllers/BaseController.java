@@ -1,6 +1,7 @@
 package pl.api.timetracko.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +24,14 @@ public abstract class BaseController<T extends Base> {
     public ResponseEntity<List<T>> findAll(){
         return ResponseEntity.ok(baseService.getAll());
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<MessageResponse> delete(@PathVariable long id) {
-        baseService.delete(id);
-        return ResponseEntity.status(250).body(new MessageResponse("Prawidlowo usunięto"));
-    }
+
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<MessageResponse> delete(@PathVariable long id) {
+//        baseService.delete(id);
+//        return ResponseEntity.status(250).body(new MessageResponse("Prawidlowo usunięto"));
+//    }
+
+    @PreAuthorize("@userService.isAdmin()")
     @GetMapping("/{id}")
     public ResponseEntity<T> findById(@PathVariable Long id) {
         return ResponseEntity.ok(baseService.findById(id));

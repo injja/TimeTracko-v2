@@ -31,6 +31,7 @@ public class RegistrationController {
     @PostMapping("/register")
     @Operation(summary = "Register a new user", description = "Registers a new user with the provided details")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
+        System.out.println(123456);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
