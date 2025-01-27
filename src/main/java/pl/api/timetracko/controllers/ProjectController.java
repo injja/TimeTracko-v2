@@ -47,4 +47,10 @@ public class ProjectController extends GroupController<Project>{
         projectService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @GetMapping("get/{id}")
+    @PreAuthorize("@projectService.isMember(#id)")
+    public ResponseEntity<Project> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.findById(id));
+    }
 }

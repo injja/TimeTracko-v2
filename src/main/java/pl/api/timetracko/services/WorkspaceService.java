@@ -40,6 +40,8 @@ public class WorkspaceService extends GroupService<Workspace> {
     public Workspace create(WorkspaceRequest workspace){
         Workspace newWorkspace=new Workspace();
         newWorkspace.setTitle(workspace.getName());
+        newWorkspace.setDescription(workspace.getDescription());
+        System.out.println("workspace.getName() = " + workspace.getName());
         Workspace createdWorkspace=workspaceRepository.save(newWorkspace);
 
         WorkspaceMember workspaceMember = new WorkspaceMember();
@@ -49,7 +51,7 @@ public class WorkspaceService extends GroupService<Workspace> {
         WorkspaceMember createdMember=workspaceMemberRepository.save(workspaceMember);
 
         newWorkspace.setCreatedBy(createdMember);
-        return workspaceRepository.save(newWorkspace);
+        return createdWorkspace;
     }
 
 
@@ -89,6 +91,13 @@ public class WorkspaceService extends GroupService<Workspace> {
         workspaceMemberRepository.deleteAllByWorkspaceId(id);
 
         workspaceRepository.delete(workspace);
+    }
+
+    public boolean isMember(Long id) {
+        Workspace workspace=workspaceRepository.findById(id)
+                .orElseThrow(()->new RuntimeException("No workspace with such id"));
+        return workspace.getWorkspaceMembers().stream()
+                .anyMatch(member -> member.getUser().getId().equals(customUserDetailsService.getCurrentUser().getUser().getId()));
     }
 
 

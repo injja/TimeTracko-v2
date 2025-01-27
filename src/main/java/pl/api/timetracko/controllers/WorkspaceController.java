@@ -25,6 +25,13 @@ public class WorkspaceController extends GroupController<Workspace> {
         this.workspaceService=workspaceService;
     }
 
+    @GetMapping("get/{id}")
+    @PreAuthorize("@workspaceService.isMember(#id)")
+    public ResponseEntity<Workspace> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(workspaceService.findById(id));
+    }
+
+
     @PostMapping
     public ResponseEntity<Workspace> create(@RequestBody WorkspaceRequest workspace){
         Workspace createdObject=workspaceService.create(workspace);
