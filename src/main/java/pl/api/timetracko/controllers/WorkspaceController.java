@@ -31,6 +31,13 @@ public class WorkspaceController extends GroupController<Workspace> {
         return ResponseEntity.ok(workspaceService.findById(id));
     }
 
+//    @PutMapping
+//    @PreAuthorize("@workspaceService.isAdmin(#workspace.getId())")
+//    public ResponseEntity<Workspace> update(@RequestBody Workspace workspace){
+//        Workspace updatedObject=workspaceService.update(workspace);
+//        return ResponseEntity.ok(updatedObject);
+//    }
+
 
     @PostMapping
     public ResponseEntity<Workspace> create(@RequestBody WorkspaceRequest workspace){

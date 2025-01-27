@@ -52,6 +52,7 @@ public class Task extends Base {
 
     @ManyToOne
     @JoinColumn(name="work-period")
+    @JsonIgnoreProperties("tasks")
     private WorkPeriod workPeriod;
 
     @ManyToOne

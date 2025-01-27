@@ -25,10 +25,10 @@ public class ProjectMember extends GroupMember implements Serializable {
     private WorkspaceMember workspaceMember;
 
     @OneToMany(mappedBy = "takenBy", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties("takenBy")
+    @JsonIgnoreProperties({"takenBy", "createdBy", "doneBy"})
     private List<Task> tasksTaken;
 //
     @OneToMany(mappedBy = "doneBy", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties("doneBy")
+    @JsonIgnoreProperties({"takenBy", "createdBy", "doneBy"})
     private List<Task> tasksDone;
 }
