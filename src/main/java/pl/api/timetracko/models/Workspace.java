@@ -17,12 +17,13 @@ public class Workspace extends Group {
 //    private String name;
 //
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties("workspace")
+    @JsonIgnoreProperties("workspaceMembers")
     private List<WorkspaceMember> workspaceMembers;
 
     @ManyToOne
     @JoinColumn(name = "created-by")
-    @JsonIgnoreProperties("workspace")
+    @JsonIgnoreProperties({"workspace","workspaceMembers"})
+
     private WorkspaceMember createdBy;
 
 }

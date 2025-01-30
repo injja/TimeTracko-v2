@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.api.timetracko.config.securityServices.CustomUserDetailsService;
 import pl.api.timetracko.models.Project;
+import pl.api.timetracko.models.ProjectMember;
 import pl.api.timetracko.repositories.ProjectMemberRepository;
 import pl.api.timetracko.repositories.ProjectRepository;
 import pl.api.timetracko.requests.ProjectRequest;
@@ -18,24 +19,34 @@ public class ProjectService extends GroupService<Project> {
     private final ProjectRepository projectRepository;
     private final CustomUserDetailsService customUserDetailsService;
     private final ProjectMemberRepository projectMemberRepository;
+    private RoleService roleService;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, CustomUserDetailsService customUserDetailsService, WorkspaceService workspaceService, ProjectMemberRepository projectMemberRepository){
+    public ProjectService(ProjectRepository projectRepository, CustomUserDetailsService customUserDetailsService, WorkspaceService workspaceService, RoleService roleService,ProjectMemberRepository projectMemberRepository){
         super(projectRepository);
         this.projectRepository=projectRepository;
         this.customUserDetailsService=customUserDetailsService;
         this.workspaceService = workspaceService;
         this.projectMemberRepository = projectMemberRepository;
+        this.roleService=roleService;
     }
 
     public Project create(ProjectRequest projectRequest){
         Project newProject= new Project();
+        ProjectMember member=new ProjectMember();
         newProject.setTitle(projectRequest.getName());
         newProject.setDescription(projectRequest.getDescription());
         newProject.setWorkspace(workspaceService.findById(projectRequest.getWorkspace_id()));
         newProject.setCreatedBy(workspaceService.getMember(customUserDetailsService.getCurrentUser().getUser().getId(), projectRequest.getWorkspace_id()));
-        return projectRepository.save(newProject);
+        Project project=projectRepository.save(newProject);
+
+        member.setRole(roleService.findById(1L));
+        member.setProject(project);
+        member.setWorkspaceMember(workspaceService.getMember(customUserDetailsService.getCurrentUser().getUser().getId(), projectRequest.getWorkspace_id()));
+        projectMemberRepository.save(member);
+        return project;
     }
+
 
     public Project update(ProjectRequest projectRequest, Long id){
         Project project=projectRepository.findById(id)
